@@ -1,5 +1,5 @@
-# <h1>Getting Data Week 4 Assignment</h1>
-<h2>Overview</h2>
+# Getting Data Week 4 Assignment
+## Overview 
 
 The purpose of this assignement was to download data from the Human Activity Recognition Using Smartphones Dataset and successfully perform the following taks:
 
@@ -11,13 +11,13 @@ The purpose of this assignement was to download data from the Human Activity Rec
 
 The script to perform all the data manilupation and creation of the final tidy dataset can be performed with the function createTideData() located within the file run_analysis.R. Furthermore, in the submission instructions, we were told that the script should be written so that the final tidy dataset in item #5 above could be produced given that the original datafiles were located within the reviewer's working directory. I have added an optional function loadRawData() in the separate scriptt file "run_analysis_(files_download).R" that the reviewer can choose to run if the files are not in the working directory. I chose not to include this in the primary script  (run_analysis.R) because I did not want to automate the potential download and manipulation of files on another person's system and because downloading the original data was not part of the assignment requirements for the script.
 
-<h2>Sections</h2>
-<ul>
-<li>Raw Data Overview</li>
-<li>Steps to Complete Assignment</li>
-<li>Downloading, Organizing and Understanding the Raw Data</li>
-<li>Assembling the Datasets</li>
-</ul>
+## Sections
+
+* Raw Data Overview
+* Steps to Complete Assignment
+* Downloading, Organizing and Understanding the Raw Data
+* Assembling the Datasets
+
 
 <h2>Raw Data Overview</h2>
 
@@ -74,28 +74,30 @@ The following raw data files were not used to complete the assignment:
 
 - 'train/Inertial Signals/body_gyro_x_train.txt': The angular velocity vector measured by the gyroscope for each window sample. The units are radians/second. 
 
-<h2>Steps to Complete Assignment<h2>
+## ps to Complete Assignment
 
-<h3>Downloading, Organizing and Understanding the Raw Data</h3>
+### Downloading, Organizing and Understanding the Raw Data
 
 Download, unzip and move data files into current working directory. I chose to keep the directory structure that placed the data in "/UCI HAR Dataset", with subdirectories "/test" and "/train". However, my script is written to search for the required files in both the directory structure above and in the parent working directory. The steps I used included the following:
-<ol>
-<li>store the tempfile name in "temp" before downloading data</li>
-<li>download the .zip file containing the raw data to temp/li>
-<li>unzip the compressed files to "data"/li>
-<li>print "data" to confirm the file names and locations/li>
-</ol>		
+
+* store the tempfile name in "temp" before downloading data
+* download the .zip file containing the raw data to temp
+* unzip the compressed files to "data"
+* print "data" to confirm the file names and locations
+		
 The files were read into the following objects:
-    activity_labels <- "activity_labels.txt"
-    features <- "features.txt"
-    subject_test <- "subject_test.txt"
-    x_test <- X_test.txt
-    y_test <- "y_test.txt"
-    subject_train <- "subject_train.txt"
-    x_train <- "X_train.txt"
-    y_train <- "y_train.txt"
+
+	activity_labels <- "activity_labels.txt"
+	features <- "features.txt"
+	subject_test <- "subject_test.txt"
+	x_test <- X_test.txt
+	y_test <- "y_test.txt"
+	subject_train <- "subject_train.txt"
+	x_train <- "X_train.txt"
+	y_train <- "y_train.txt"
 
 Reading the tables into R and using the dim() function to understand the basic structure, gives the following results:
+
 	> print(dim(activity_labels))
 	[1] 6 2
 	> print(dim(features))
@@ -115,7 +117,7 @@ Reading the tables into R and using the dim() function to understand the basic s
 		
 We know from the features.txt and features_info.txt files that these are the 561 variables that were measured for each observation. These will thus become variable (or column) names in our tidy datasets. 
 
-str(x_test) and str(x_train) shows that both are data.frames with 561 variables, which will use the values in features.txt as column names
+str(x_test) and str(x_train) show that both are data.frames with 561 variables, which will use the values in features.txt as column names
 
 We know that the 30 subjects were split into test and train groups (70% train, 30% test or 21 train, 9 test) and that they are identified for each observations in subject_test.txt and subject_train.txt (from the original README.txt file accompanying the raw data). We can test that these files contain the correct number of unique subjects in the following manner:
 
@@ -148,18 +150,18 @@ Where:
   </ul>
 	
 Once the separate datasets are assembled, we will:
-<ol>
+<ul>
 <li>combine the two into a combined test/train dataset</li>
 <li>extract only those values representing mean and standard deviation into a tidy dataset</li>
 <li>create a new tidy dataset onsisting of the means of the results from the previous tidy dataset for each subject and activity.</li>
-</ol>	
+</ul>	
 <h3>Assembling the Datasets</h3>
 
 The R script "run_analysis.R" includes the function createTidyData(), which will read the raw data into R, assemble the intermediate and final tidy datasets and write the final dataset to "subject_means.txt" in the users working directory. An optional function, loadRawData() is located in a separate script file, run_analysis_(files_download).R is provided in the event the user wishes to automate download of the raw data into the working directory. It is provided strictly as a convenience for the user, but is unncessary if the raw data files exist in the user's working directory.
 
 1) 	Add the column names in "features" to x_test and x_train:
-<code>		colnames(x_test) <- features[[2]]
-colnames(x_train) <- features[[2]]</code>
+<p>		colnames(x_test) <- features[[2]]
+colnames(x_train) <- features[[2]]</p>
 	The observation data now includes descriptive variable names
 	
 2)  Add column name "activity" to y_train and and y_test, which contain the activity ID variable, to conform to tidy data standards by giving a descriptive name to the variable:
