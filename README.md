@@ -251,24 +251,24 @@ impact the resulting data.
 
 	Reset the "cols" vector to include only the columns that will be used for calculating the mean values in the final data set
 
-		`cols<-c(grep("mean", names(comb_data), value = TRUE), 
-			grep("std", names(comb_data), value = TRUE))`
+		cols<-c(grep("mean", names(comb_data), value = TRUE), 
+			grep("std", names(comb_data), value = TRUE))
 	
 	Melt comb_data so that subject and activity are a unique ID that data can be grouped by 
 	to calculate means. Subject type (test or train) can be included in the id that data will 
 	be grouped upon without affecting calculation of means since each subject belongs to only 
 	one group (test or train).
 	
-		`data_melt <- melt(comb_data, id=c("subject", "activity", "subjecttype"), measure.vars=cols)`
+		data_melt <- melt(comb_data, id=c("subject", "activity", "subjecttype"), measure.vars=cols)
 
 	Create the final dataset with the mean of each variable for each activity by each subject 
 	given in wide format with 180 objects of 82 variables that include subject, activity, 
 	subjecttype (test or train) and the means of 79 measured variables):
 
 	
-		`subject_means <- dcast(data_melt, subject + activity + subjecttype ~ variable,mean)`
+		subject_means <- dcast(data_melt, subject + activity + subjecttype ~ variable,mean)
 			
-		`dim(subject_means) should result in a table of 180 objects of 82 variables 
+		dim(subject_means) should result in a table of 180 objects of 82 variables 
 		(30 subjects x 6 acitivities each = 180 observations):
 		> dim(subject_means)
 		[1] 180  82`
@@ -279,7 +279,8 @@ impact the resulting data.
 	of observation per variable.
 	
 		
-		`str(subject_means)  `
+		str(subject_means)
+		
 		 data.frame':	180 obs. of  82 variables:  
 		 $ subject                        : int  1 1 1 1 1 1 2 2 2 2 ...  
 		 $ activity                       : chr  "LAYING" "SITTING" "STANDING" "WALKING" ...  
