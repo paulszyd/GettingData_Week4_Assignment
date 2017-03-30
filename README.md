@@ -160,35 +160,35 @@ Once the separate datasets are assembled, we will:
 The R script "run_analysis.R" includes the function createTidyData(), which will read the raw data into R, assemble the intermediate and final tidy datasets and write the final dataset to "subject_means.txt" in the users working directory. An optional function, loadRawData() is located in a separate script file, run_analysis_(files_download).R is provided in the event the user wishes to automate download of the raw data into the working directory. It is provided strictly as a convenience for the user, but is unncessary if the raw data files exist in the user's working directory.
 
 1) Add the column names in "features" to x_test and x_train:
-
+<pre>
 	colnames(x_test) <- features[[2]]
 	colnames(x_train) <- features[[2]]</p>
-	
+</pre>	
 	The observation data now includes descriptive variable names
 	
 2)  Add column name "activity" to y_train and and y_test, which contain the activity ID variable, to conform to tidy data standards by giving a descriptive name to the variable:
-
+<pre>
 	colnames(y_test) <- "activity"
 	colnames(y_train) <- "activity"
-	
+</pre>		
 	The activity column now has a descriptive variable name
-		
-3) Add column name "subject" to subject_test and subject_train to conform to tidy data standards by giving a descriptive name to the variable:
 	
+3) Add column name "subject" to subject_test and subject_train to conform to tidy data standards by giving a descriptive name to the variable:
+<pre>	
 	colnames(subject_test) <- "subject"
 	colnames(subject_train) <- "subject" 
 	
 	The column identifying the subjects now has a descriptive variable name		
-		
+</pre>		
 4) Add "subjecttype" column with "test" or "train" flag to identify subjects as test or train subjects so they can be properly identified in the combined data set. This must be done before the datasets are combined and can be done using the mutate() function:
-
+<pre>
 	subject_test <- mutate(subject_test, subjecttype="test")
 	subject_train <- mutate(subject_train, subjecttype="train")
 	
 	The subject objects now include a column to identify which group the subject was in (test or train) and the column includes a descriptive variable name ("subjecttype")
 
 5)  Bind subject_test and subject_train columns to y_test and y_train so that the subject and the activity (walking, sitting, etc) are matched for each row of observations
-
+<pre>
 	y_test <- cbind(subject_test, y_test)
 	y_train <- cbind(subject_train, y_train)
 	
@@ -196,7 +196,7 @@ The R script "run_analysis.R" includes the function createTidyData(), which will
 	The columns in these objects are ""subject", "subjecttype", "activity"
 	
 6)  Bind columns in x_test and x_train data to y_test and y_train combine subject, subjecttype, activity and data results
-		
+<pre>		
 	test_data <- cbind(y_test, x_test)
 	train_data <- cbind(y_train, x_train)
 	
@@ -204,18 +204,18 @@ The R script "run_analysis.R" includes the function createTidyData(), which will
 	"subject", "subjecttype", "activity", "feature1", "feature2",..."feature561"
 
 7)  Combine test and train data into single dataset using rbind(). 
-	
+<pre>	
 	comb_data <- rbind(train_data, test_data)
 		
 8)  Now that all the data is in a single dataset we can change activity from an integer ID to an activity description. We did not do this earlier because changing the activity as a standalone variable could have affected the order of the data, leading to incorrect matching as objects were combined. We will use the mapvalues() function that updates a value based upon the existing value, with the ability to update a numeric to a character value. In this case, 1="WALKING", 2="WALKING_UPSTAIRS"...6="LAYING"
-
+<pre>
 	comb_data$activity <- mapvalues(comb_data$activity,                   
 				c(1, 2, 3, 4, 5, 6),
 				c("WALKING", "WALKING_UPSTAIRS", "WALKING_DOWNSTAIRS", "SITTING", "STANDING", "LAYING"))
 
 9)  Create a vector of column names to be used to subset the full data set to desired data consisting only of mean and standard deviation values.
 	Note: only variables with lower case "mean" are being extracted because examination of the data and features descriptions show they are results that are a mean() value. Those with an uppercase "Mean" are results that use a mean value to calculate another value (e.g., an angle based upon a mean) and thus, are not true means. We have chosen to include meanFreq() because it is a measure of a mean value. It is easier for the end user of the data to disregard this value if not needed than it is to use it if it is not included, therefore the ambiguity of the request suggests it is better to include it. We create an object ("cols") that will be used to subset the data as desired:
-	
+<pre>	
 	cols<-c("subject","subjecttype","activity",
 		grep("mean", names(comb_data), value = TRUE), 
 		grep("std", names(comb_data), value = TRUE))
@@ -243,16 +243,16 @@ The R script "run_analysis.R" includes the function createTidyData(), which will
 11) We now need to group the data by subject and activity, while maintaining the ability to identify a subject as test or train (this was not specified in the instructions, but we will do so in case the end user wishes to have that information available. Including it does not impact the resulting data.
 
 	a)  Reset the "cols" vector to include only the columns that will be used for calculating the mean values in the final data set
-	
+<pre>	
 		cols<-c(grep("mean", names(comb_data), value = TRUE), 
 			grep("std", names(comb_data), value = TRUE))
 						
 	b)  Melt comb_data so that subject and activity are a unique ID that data can be grouped by to calculate means. Subject type (test or train) can be included in the id that data will be grouped upon without affecting calculation of means since each subject belongs to only one group (test or train).
-	
+<pre>	
 		data_melt <- melt(comb_data, id=c("subject", "activity", "subjecttype"), measure.vars=cols)
 				
 	c)  Create the final dataset with the mean of each variable for each activity by each subject given in wide format with 180 objects of 82 variables that include subject, activity, subjecttype (test or train) and the means of 79 measured variables):
-	
+<pre>	
 		subject_means <- dcast(data_melt, subject + activity + subjecttype ~ variable,mean)
 			
 		dim(subject_means) should result in a table of 180 objects of 82 variables (30 subjects x 6 acitivities each = 180 observations):
@@ -260,7 +260,7 @@ The R script "run_analysis.R" includes the function createTidyData(), which will
 		[1] 180  82
 			
 	d)  We check to see if the data is tidy. The dataset includes descriptive variable names, descriptive row lables ("LAYING", "SITTING" and "test", "train") and includes a single type of observation per variable.
-		
+<pre>		
 		str(subject_means)
 		'data.frame':	180 obs. of  82 variables:
 		 $ subject                        : int  1 1 1 1 1 1 2 2 2 2 ...
@@ -270,7 +270,7 @@ The R script "run_analysis.R" includes the function createTidyData(), which will
 		 $ tBodyAcc-mean()-Y              : num  -0.04051 -0.00131 -0.01614 -0.01738 -0.00992 ...
 		
 12) Finally, we write the resulting dataset to the file "subject_means.txt"
-	
+<pre>	
 	write.table(subject_means,"./subject_means.txt", row.names = FALSE)
 		
 Reviewing the requirements for this assignment, we can confirm whether they have been successfully fulfilled:
