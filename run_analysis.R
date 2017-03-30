@@ -1,3 +1,5 @@
+# The createTidyData() function can be used to load raw data files into R and produce the required tidy dataset,
+# provided the raw dataset as identified in README.md has been downloaded and unzipped into the user's working directory.
 createTidyData <- function(){
 # Read tables into R
 # Look for each file in the original folder in which it existed in the unzipped raw data folder
