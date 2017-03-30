@@ -241,20 +241,29 @@ The R script "run_analysis.R" includes the function createTidyData(), which will
 		 ...
 	 $ feature79 ....
 </pre>		 
-	This dataset includes 82 variables, which include "subject", "subjecttype", "activity" and the 79 variables, which is what we expected using "cols"
+	This dataset includes 82 variables, which include "subject", "subjecttype", "activity" and 
+	the 79 variables, which is what we expected using "cols"
 	
-11) We now need to group the data by subject and activity, while maintaining the ability to identify a subject as test or train (this was not specified in the instructions, but we will do so in case the end user wishes to have that information available. Including it does not impact the resulting data.
+11) We now need to group the data by subject and activity, while maintaining the ability to
+identify a subject as test or train (this was not specified in the instructions, but we will 
+do so in case the end user wishes to have that information available. Including it does not 
+impact the resulting data.
 
 	a)  Reset the "cols" vector to include only the columns that will be used for calculating the mean values in the final data set
 <pre>	
 		cols<-c(grep("mean", names(comb_data), value = TRUE), 
 			grep("std", names(comb_data), value = TRUE))
 </pre>						
-	b)  Melt comb_data so that subject and activity are a unique ID that data can be grouped by to calculate means. Subject type (test or train) can be included in the id that data will be grouped upon without affecting calculation of means since each subject belongs to only one group (test or train).
+	b)  Melt comb_data so that subject and activity are a unique ID that data can be grouped by 
+	to calculate means. Subject type (test or train) can be included in the id that data will 
+	be grouped upon without affecting calculation of means since each subject belongs to only 
+	one group (test or train).
 <pre>	
 		data_melt <- melt(comb_data, id=c("subject", "activity", "subjecttype"), measure.vars=cols)
 </pre>				
-	c)  Create the final dataset with the mean of each variable for each activity by each subject given in wide format with 180 objects of 82 variables that include subject, activity, subjecttype (test or train) and the means of 79 measured variables):
+	c)  Create the final dataset with the mean of each variable for each activity by each subject 
+	given in wide format with 180 objects of 82 variables that include subject, activity, 
+	subjecttype (test or train) and the means of 79 measured variables):
 <pre>	
 		subject_means <- dcast(data_melt, subject + activity + subjecttype ~ variable,mean)
 			
@@ -263,7 +272,9 @@ The R script "run_analysis.R" includes the function createTidyData(), which will
 		> dim(subject_means)
 		[1] 180  82
 </pre>			
-	d)  We check to see if the data is tidy. The dataset includes descriptive variable names, descriptive row lables ("LAYING", "SITTING" and "test", "train") and includes a single type of observation per variable.
+	d)  We check to see if the data is tidy. The dataset includes descriptive variable names, 
+	descriptive row lables ("LAYING", "SITTING" and "test", "train") and includes a single type 
+	of observation per variable.
 <pre>		
 		str(subject_means)
 		'data.frame':	180 obs. of  82 variables:
