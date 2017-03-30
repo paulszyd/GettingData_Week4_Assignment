@@ -249,49 +249,48 @@ identify a subject as test or train (this was not specified in the instructions,
 do so in case the end user wishes to have that information available. Including it does not 
 impact the resulting data.
 
-	a)  Reset the "cols" vector to include only the columns that will be used for calculating the mean values in the final data set
-<pre>	
-		cols<-c(grep("mean", names(comb_data), value = TRUE), 
-			grep("std", names(comb_data), value = TRUE))
-</pre>						
+	Reset the "cols" vector to include only the columns that will be used for calculating the mean values in the final data set
 
-	b)  Melt comb_data so that subject and activity are a unique ID that data can be grouped by 
+		`cols<-c(grep("mean", names(comb_data), value = TRUE), 
+			grep("std", names(comb_data), value = TRUE))`
+	
+	Melt comb_data so that subject and activity are a unique ID that data can be grouped by 
 	to calculate means. Subject type (test or train) can be included in the id that data will 
 	be grouped upon without affecting calculation of means since each subject belongs to only 
 	one group (test or train).
-<pre>	
-		data_melt <- melt(comb_data, id=c("subject", "activity", "subjecttype"), measure.vars=cols)
-</pre>				
+	
+		`data_melt <- melt(comb_data, id=c("subject", "activity", "subjecttype"), measure.vars=cols)`
 
-	c)  Create the final dataset with the mean of each variable for each activity by each subject 
+	Create the final dataset with the mean of each variable for each activity by each subject 
 	given in wide format with 180 objects of 82 variables that include subject, activity, 
 	subjecttype (test or train) and the means of 79 measured variables):
-<pre>	
-		subject_means <- dcast(data_melt, subject + activity + subjecttype ~ variable,mean)
+
+	
+		`subject_means <- dcast(data_melt, subject + activity + subjecttype ~ variable,mean)`
 			
-		dim(subject_means) should result in a table of 180 objects of 82 variables 
+		`dim(subject_means) should result in a table of 180 objects of 82 variables 
 		(30 subjects x 6 acitivities each = 180 observations):
 		> dim(subject_means)
-		[1] 180  82
-</pre>		
+		[1] 180  82`
+		
 
-	d)  We check to see if the data is tidy. The dataset includes descriptive variable names, 
+	Check to see if the data is tidy. The dataset includes descriptive variable names, 
 	descriptive row lables ("LAYING", "SITTING" and "test", "train") and includes a single type 
 	of observation per variable.
 	
-<pre>		
-		str(subject_means)
-		'data.frame':	180 obs. of  82 variables:
-		 $ subject                        : int  1 1 1 1 1 1 2 2 2 2 ...
-		 $ activity                       : chr  "LAYING" "SITTING" "STANDING" "WALKING" ...
-		 $ subjecttype                    : chr  "train" "train" "train" "train" ...
-		 $ tBodyAcc-mean()-X              : num  0.222 0.261 0.279 0.277 0.289 ...
-		 $ tBodyAcc-mean()-Y              : num  -0.04051 -0.00131 -0.01614 -0.01738 -0.00992 ...
-</pre>		
+		
+		`str(subject_means)  `
+		 data.frame':	180 obs. of  82 variables:  
+		 $ subject                        : int  1 1 1 1 1 1 2 2 2 2 ...  
+		 $ activity                       : chr  "LAYING" "SITTING" "STANDING" "WALKING" ...  
+		 $ subjecttype                    : chr  "train" "train" "train" "train" ...  
+		 $ tBodyAcc-mean()-X              : num  0.222 0.261 0.279 0.277 0.289 ...  
+		 $ tBodyAcc-mean()-Y              : num  -0.04051 -0.00131 -0.01614 -0.01738 -0.00992 ...  
+	
 12) Finally, we write the resulting dataset to the file "subject_means.txt"
-<pre>	
-	write.table(subject_means,"./subject_means.txt", row.names = FALSE)
-</pre>		
+	
+	`write.table(subject_means,"./subject_means.txt", row.names = FALSE)`
+	
 Reviewing the requirements for this assignment, we can confirm whether they have been successfully fulfilled:
 
 1) Merge the training and the test sets to create one data set. 
