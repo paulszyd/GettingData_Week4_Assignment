@@ -1,5 +1,14 @@
 # Getting Data Week 4 Assignment
-## Overview 
+
+## Sections
+
+* Assignment Overview
+* Raw Data Overview
+* Steps to Complete Assignment
+* Downloading, Organizing and Understanding the Raw Data
+* Assembling the Datasets
+
+## Assignment Overview 
 
 The purpose of this assignement was to download data from the Human Activity Recognition Using Smartphones Dataset and successfully perform the following taks:
 
@@ -11,15 +20,7 @@ The purpose of this assignement was to download data from the Human Activity Rec
 
 The script to perform all the data manilupation and creation of the final tidy dataset can be performed with the function createTideData() located within the file run_analysis.R. Furthermore, in the submission instructions, we were told that the script should be written so that the final tidy dataset in item #5 above could be produced given that the original datafiles were located within the reviewer's working directory. I have added an optional function loadRawData() in the separate scriptt file "run_analysis_(files_download).R" that the reviewer can choose to run if the files are not in the working directory. I chose not to include this in the primary script  (run_analysis.R) because I did not want to automate the potential download and manipulation of files on another person's system and because downloading the original data was not part of the assignment requirements for the script.
 
-## Sections
-
-* Raw Data Overview
-* Steps to Complete Assignment
-* Downloading, Organizing and Understanding the Raw Data
-* Assembling the Datasets
-
-
-<h2>Raw Data Overview</h2>
+## Raw Data Overview
 
 The original compressed data used for the assignment can be found here:
 
