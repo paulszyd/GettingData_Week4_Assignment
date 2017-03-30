@@ -162,7 +162,7 @@ The R script "run_analysis.R" includes the function createTidyData(), which will
 1) Add the column names in "features" to x_test and x_train:
 <pre>
 	colnames(x_test) <- features[[2]]
-	colnames(x_train) <- features[[2]]</p>
+	colnames(x_train) <- features[[2]]
 
 	The observation data now includes descriptive variable names
 </pre>		
@@ -185,7 +185,8 @@ The R script "run_analysis.R" includes the function createTidyData(), which will
 	subject_test <- mutate(subject_test, subjecttype="test")
 	subject_train <- mutate(subject_train, subjecttype="train")
 	
-	The subject objects now include a column to identify which group the subject was in (test or train) and the column includes a descriptive variable name ("subjecttype")
+	The subject objects now include a column to identify which group the subject 
+	was in (test or train) and the column includes a descriptive variable name ("subjecttype")
 </pre>
 5)  Bind subject_test and subject_train columns to y_test and y_train so that the subject and the activity (walking, sitting, etc) are matched for each row of observations
 <pre>
@@ -206,7 +207,8 @@ The R script "run_analysis.R" includes the function createTidyData(), which will
 7)  Combine test and train data into single dataset using rbind(). 
 <pre>	
 	comb_data <- rbind(train_data, test_data)
-</pre>		
+</pre>
+
 8)  Now that all the data is in a single dataset we can change activity from an integer ID to an activity description. We did not do this earlier because changing the activity as a standalone variable could have affected the order of the data, leading to incorrect matching as objects were combined. We will use the mapvalues() function that updates a value based upon the existing value, with the ability to update a numeric to a character value. In this case, 1="WALKING", 2="WALKING_UPSTAIRS"...6="LAYING"
 <pre>
 	comb_data$activity <- mapvalues(comb_data$activity,                   
@@ -255,7 +257,8 @@ The R script "run_analysis.R" includes the function createTidyData(), which will
 <pre>	
 		subject_means <- dcast(data_melt, subject + activity + subjecttype ~ variable,mean)
 			
-		dim(subject_means) should result in a table of 180 objects of 82 variables (30 subjects x 6 acitivities each = 180 observations):
+		dim(subject_means) should result in a table of 180 objects of 82 variables 
+		(30 subjects x 6 acitivities each = 180 observations):
 		> dim(subject_means)
 		[1] 180  82
 </pre>			
