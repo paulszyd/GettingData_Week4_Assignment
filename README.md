@@ -254,6 +254,7 @@ impact the resulting data.
 		cols<-c(grep("mean", names(comb_data), value = TRUE), 
 			grep("std", names(comb_data), value = TRUE))
 </pre>						
+
 	b)  Melt comb_data so that subject and activity are a unique ID that data can be grouped by 
 	to calculate means. Subject type (test or train) can be included in the id that data will 
 	be grouped upon without affecting calculation of means since each subject belongs to only 
@@ -261,6 +262,7 @@ impact the resulting data.
 <pre>	
 		data_melt <- melt(comb_data, id=c("subject", "activity", "subjecttype"), measure.vars=cols)
 </pre>				
+
 	c)  Create the final dataset with the mean of each variable for each activity by each subject 
 	given in wide format with 180 objects of 82 variables that include subject, activity, 
 	subjecttype (test or train) and the means of 79 measured variables):
@@ -271,10 +273,12 @@ impact the resulting data.
 		(30 subjects x 6 acitivities each = 180 observations):
 		> dim(subject_means)
 		[1] 180  82
-</pre>			
+</pre>		
+
 	d)  We check to see if the data is tidy. The dataset includes descriptive variable names, 
 	descriptive row lables ("LAYING", "SITTING" and "test", "train") and includes a single type 
 	of observation per variable.
+	
 <pre>		
 		str(subject_means)
 		'data.frame':	180 obs. of  82 variables:
