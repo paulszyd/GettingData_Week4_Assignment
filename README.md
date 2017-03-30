@@ -226,7 +226,7 @@ The R script "run_analysis.R" includes the function createTidyData(), which will
 	comb_data <- comb_data[,cols]
 		
 	This produces a tidy dataset of the desired combined data
-	
+<pre>	
 	> str(comb_data)
 	'data.frame':	10299 obs. of  82 variables:
 	 $ subject                        : int  1 1 1 1 1 1 1 1 1 1 ...
@@ -237,7 +237,7 @@ The R script "run_analysis.R" includes the function createTidyData(), which will
 	 $ tBodyAcc-mean()-Z              : num  -0.133 -0.124 -0.113 -0.123 -0.115 ...
 		 ...
 	 $ feature79 ....
-		 
+</pre>		 
 	This dataset includes 82 variables, which include "subject", "subjecttype", "activity" and the 79 variables, which is what we expected using "cols"
 	
 11) We now need to group the data by subject and activity, while maintaining the ability to identify a subject as test or train (this was not specified in the instructions, but we will do so in case the end user wishes to have that information available. Including it does not impact the resulting data.
